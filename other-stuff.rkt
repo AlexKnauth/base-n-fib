@@ -2,10 +2,11 @@
 
 (require racket/match
          racket/list
+         plot
          "base-n-fib.rkt"
          )
 (module+ test
-  (require rackunit plot))
+  (require rackunit))
 
 (define (find-repeating-pattern n #:base b)
   (define f0 (make-list n 0))
@@ -25,6 +26,14 @@
   (printf "base: ~v, digits: " b)
   (write-b (reverse (range b)))
   (for-each write-b (find-repeating-pattern n #:base b)))
+
+(define (find-rep-pat-lengths n)
+  (for/list ([i (in-range 2 (add1 n))])
+    (list i (length (find-repeating-pattern 1 #:base i)))))
+
+(define (plot-rep-pat-length-scatter-plot n #:rep-pat-lengths [rep-pat-lengths (find-rep-pat-lengths n)])
+  (plot (list (axes) (tick-grid) (points rep-pat-lengths #:sym 'point #:color "red"))
+        #:x-min -5 #:y-min -5))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -52,12 +61,10 @@
                                                       [1 0 0]))
   (display-repeated-pattern 4 #:base 2)
   (define rep-pat-lengths
-    (for/list ([i (in-range 2 10001)])
-      (list i (length (find-repeating-pattern 1 #:base i)))))
+    (find-rep-pat-lengths 10000))
   (for ([p (in-list rep-pat-lengths)] [_ (in-range 21)])
     (match-define (list i len) p)
     (printf "(length (find-repeating-pattern 1 #:base ~v)) = ~v\n" i len))
   (argmax second rep-pat-lengths)
-  (plot (list (axes) (tick-grid) (points rep-pat-lengths #:sym 'point #:color "red"))
-        #:x-min -5 #:y-min -5)
+  (plot-rep-pat-length-scatter-plot 10000 #:rep-pat-lengths rep-pat-lengths)
   )
