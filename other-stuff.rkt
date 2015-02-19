@@ -20,6 +20,12 @@
      (define next (take (b+ fn-1 fn #:base b) n))
      (find-repeating-pattern-loop f0 f1 (cons next rev-accum) n #:base b)]))
 
+(define (display-repeated-pattern n #:base b)
+  (define write-b (b-writer/ln #:base b))
+  (printf "base: ~v, digits: " b)
+  (write-b (reverse (range b)))
+  (for-each write-b (find-repeating-pattern n #:base b)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (module+ test
@@ -44,6 +50,7 @@
                                                       [0 1 0]
                                                       [1 1 1]
                                                       [1 0 0]))
+  (display-repeated-pattern 4 #:base 2)
   (define rep-pat-lengths
     (for/list ([i (in-range 2 10001)])
       (list i (length (find-repeating-pattern 1 #:base i)))))
