@@ -33,7 +33,7 @@
 
 (define (plot-rep-pat-length-scatter-plot n #:rep-pat-lengths [rep-pat-lengths (find-rep-pat-lengths n)])
   (plot (list (axes) (tick-grid) (points rep-pat-lengths #:sym 'point #:color "red"))
-        #:x-min -5 #:y-min -5))
+        #:x-min -5 #:x-max n #:y-min -5))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
